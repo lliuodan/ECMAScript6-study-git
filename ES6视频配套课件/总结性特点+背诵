@@ -1,0 +1,51 @@
+一。定义变量
+
+let总结
+     1、不允许重复声明
+     2、没有变量提升
+     3、暂时性死区：在块级作用域下不可以提前使用未被声明的变量
+
+块级作用域
+    for(){},if(){},{}
+
+const总结
+    1、不允许重复声明
+    2、没有变量提升
+    3、定义静态变量，一旦声明必须赋值
+
+全局属性
+    1、var a=1;     window.a=1;  "a" in window --> true;
+    2、self==window -->  true;
+    3、let声明的变量不会给全局当作属性 let b=1; window.b --->  undefined;
+
+二。解构赋值
+
+数组的解构赋值：
+    1、解构赋值  let ary=['a','b'];let [a,b,c]=ary;  console.log(a,b,c)--->a,b,undefined
+    2、嵌套赋值  let [x,y,[s],[[f]]]=[1,2,[3],[[4]]]; console.log(x,y,s,f)---->1,2,3,4
+    3、省略赋值  let ary=[1,2,3,4,5,6];let a=ary[0];let b=ary[ary.length-1]; let [x,,,,y]=ary; console.log(x,y)--->1,5
+    4、不定参数赋值    let [a,...b]=[1,2,3,4,5];   console.log(a,b)--->1,[2,3,4,5]
+        let [x,y,...z]=['a']; console.log(x,y,z)--->'a',undefined,[]
+    5、默认值   let [f0,f1]=[1]; console.log(f0,f1);--->1,undefined let [f2,f3=2]=[1]; console.log(f2,f3)--->1,2
+    6、特殊的   判断一个位置是否有值，严格按照===判断，如果数组中成员不严格等于undefined，
+                默认值不会生效
+                如：let [f=1]=[undefined];    console.log(f);--->1    生效
+                    let [f=1]=[2];            console.log(f);--->2    不生效
+                    let [f=1]=[null];         console.log(f);--->null  不生效
+                    function fn(){console.log('哈哈');}   let [x=fn(),y=0]=[1]; console.log(x,y);--->1,0  不生效
+                    （只要变量所占在数组中的位置的值不是undefined,fn()根本不会执行）
+
+对象的解构赋值
+    1、解构赋值
+        变量名==属性名
+        let obj={n1:'p1',n2:'p2'};
+        let {n1,n2}=obj;
+        console.log(n1,n2);--->p1,p2
+
+字符串的解构赋值
+    const [a,b,c,d,e]='hello';console.log(a,b,c,d,e)-->'h' 'e' 'l' 'l' 'o'
+    类似数组的对象都有一个Length属性：
+        let {length:len}='hello'; console.log(len);--->5
+
+
+三。字符串方法

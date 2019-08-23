@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>对象的扩展</title>
+</head>
+<body>
+	
+</body>
+</html>
+<script>
+{
+	//一.属性的简洁表示
+	let a='aa',b='bb';
+	let obj={
+		a:'a',
+		[a]:'AA',//[a] 代表变量
+		[a+b]:'A+B',
+		fn(){},//简写
+		// fn:function(){
+
+		// }
+	}
+	console.log(obj.a);//a
+	console.log(obj['a']);//a
+	console.log(obj);//{a: "a", aa: "AA", aabb: "A+B"}
+}
+
+{
+	//二.Object类上的方法
+//Object.is
+//===
+	//NaN===NaN   false
+	console.log(Object.is(NaN,NaN));//true
+
+	let ary=[1,2,NaN,NaN,1,2];
+	console.log(ary.includes(NaN));//true
+
+	let ary2=[];
+	ary.forEach((item)=>{
+		var f=true;
+		for(var i=0;i<ary2.length;i++){
+			if(Object.is(item,ary2[i])){
+				f=false;
+			}
+		}
+		if(f){
+				ary2.push(item);
+		}
+	});
+	console.log(ary2);//数组去重[1, 2, NaN]
+
+//Object.assign(obj1,obj2)  将obj2的内容合并到obj1上，返回obj1
+	let obj1={a:'1'},obj2={b:1};
+	console.log(Object.assign(obj1,obj2));//{a: "1", b: 1}
+
+//Object.getOwnPropertyDescriptor() 数组下面的属性可枚举可修改
+	let str='123';
+	console.log(Object.getOwnPropertyDescriptor(str,'length'));//{value: 3, writable: false, enumerable: false, configurable: false}
+
+
+	console.log(Object.getOwnPropertyDescriptor([1,2,3],'length'));//writable: true
+
+//属性的遍历:
+//1.for in  
+//2.Object.keys();返回值是数组，包括对象自己（私有属性）所有可枚举的属性
+//3.Object.getOwnPropertyNames();返回值是数组，包括对象自己（私有属性）所有属性
+//4.Object.getOwnPropertySymbols(),返回值是个数组,包括对象自身的所有的Symbols属性
+	 
+}
+	
+</script>

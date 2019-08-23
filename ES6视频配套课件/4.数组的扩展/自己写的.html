@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>数组扩展</title>
+</head>
+<body>
+	Array.from(),Array.of()
+	数组实例的copyWithin()
+	..........find()和findIndex()
+	..........fill()
+	..........entries(),keys()
+	..........includes()
+	数组的空位
+
+</body>
+</html>
+<script>
+{
+	//一.Array类上的方法
+	//Array(),将传进来的值变成数组返回
+	//注意：只传一个参数n,代表返回数组的长度
+	console.log(Array(1,2,3,4));//[1,2,3,4]
+	console.log(Array(4));//length:4
+
+	//Array.of()
+	//注意和Array()只有一点区别：只传一个参数n时,返回的是当前参数组成的数组
+	console.log(Array.of(8,9));//[8,9]
+
+	//Array.from()
+	//参数：数组或者类数组
+	//返回值：新的数组
+	//通常：将类数组变成数组
+	let ary=[5,6,7,8];
+	let newAry=Array.from(ary);//克隆
+	console.log(newAry);//[5,6,7,8]
+
+	function toArray(){
+		return Array.from(arguments);
+	}
+	console.log(toArray(1,2,3,4));//[1,2,3,4]
+}
+
+{
+	//二。Array原型上的方法
+	//1.copyWithin(target,start,end),原数组会被改变
+	//target:必填，从该位置开始替换数据
+	//start:选填，默认值为0，从该位置开始读取数组
+	//end：选填，默认值为数组长度，到该位置前停止读取数据
+	
+	let ary=[1,2,3,4,5,6,7,8];
+	console.log(ary.copyWithin(0,1,5));//[2, 3, 4, 5, 5, 6, 7, 8]
+	console.log(ary);//替换后的新数组
+	// 5,2,6
+	// 1,2,3,4,5,3,4,5
+	
+
+
+	//2.find  findIndex
+	//find:先遍历数组一项一项的执行，一旦函数返回值为true，就停止查找,返回当前项（item），最后都没找到，结果为undefined
+	//findIndex：返回当前索引(index),若没有，则返回undefined
+	let ary2=[45,6,2,8,4,5,9,7]
+	console.log(ary2.find(function(item,index,input){
+		// return false;//undefined
+		return item==6;//6
+	}))
+	console.log(ary2.findIndex(function(item,index,input){
+		return item==6;//1
+	}))
+	console.log(ary2);
+
+
+	//3.fill(value,start,end)填充数组,原数组会被改变
+	//value:必填，填充的值
+	//start：选填，开始填充的位置，默认0
+	//end:   选填，停止。。。。。，不包括后面
+	
+	let ary3=[1,2,3,4,5,6];
+	// console.log(ary3.fill(1));//[1,1,1,1,1]
+	ary3.fill(1,2,4);
+	console.log(ary3);//[1,2,1,1,5,6]
+
+	//得到有7个1的数组
+	//console.log(Array(7));//返回的是7个空位，不是undefined
+	console.log(Array(7).fill(1));
+
+
+
+	//4.includes()：数组中是否有某项  有:true, 没有：false
+	//indexof()  lastIndexOf()   有:返回索引，没有:返回-1
+	console.log(ary3.includes(6));//true
+
+
+
+	//三.数组的空位   ：空位不是undefined
+	var arr=Array(3);//三个空位
+	var arr2=[undefined,undefined,undefined];
+	//用（索引） in   arr  来检测是不是空位
+	console.log(1 in arr);//false
+	console.log(1 in arr2);//true
+	
+
+	var arr3=[1,,,1,,];
+	console.log(arr3.length);//5
+	arr3.forEach(function(item){//ES5方法,forEach不支持return
+		console.log(item);//1 1
+	})
+
+	//ES5中的方法对空位处理都不太一致，大部分都是跳过空位
+	
+	console.log(arr3.map(function(item){//ES5方法
+		return item;//[1, empty × 2, 1, empty]
+	}))
+
+	//ES6中的方法会将空位处理为undefined
+	arr3.find(function(item){
+		console.log(item);//[1, undefined,undefined, 1, undefined]
+	})
+
+
+	//四.遍历数组
+	//for of:遍历当前项
+	let array=[1,2,3,4,3,5];
+	for(let item of array){
+		console.log('当前项'+item);//当前项
+	}
+
+	for(let key in array){
+		console.log('索引'+key)
+	}
+	
+
+	//keys:遍历索引
+	for(let key of array.keys()){
+		console.log(key);//0,1,2,3,4,5
+	}
+
+
+	//entries()
+	for (let [index,item] of array.entries()){
+		console.log(index,item);
+	}
+}
+
+</script>

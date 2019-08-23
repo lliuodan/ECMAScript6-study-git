@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Set和Map</title>
+</head>
+<body>
+1.Set
+	基本用法，Set实例的属性和方法，遍历操作
+	WeakSet
+2.Map
+	Map结构的目的和基本用法，实例的属性和操作方法，遍历方法，以其他数据结构的相互转换
+	WeakMap
+</body>
+</html>
+<script>
+{
+	//一.Set
+	//1.使用构造函数方式创建Set实例
+	//2.参数是个数组，返回值是Set实例，是去重后的
+	let set1=new Set([1,2,3,NaN,NaN,1,2,3,4,5]);
+	console.log(set1);
+	//将Set实例变为数组
+	console.log([...set1]);//[1, 2, 3, NaN, 4, 5]
+	console.log(Array.from(set1));// [1, 2, 3, NaN, 4, 5]
+
+//利用Set实例实现数组去重
+	function fn(ary){
+		return [...new Set(ary)];
+	}
+
+	console.log(fn([1,2,3,4,5,3,2,2,3,4]));//[1, 2, 3, 4, 5]
+}
+
+{
+	//二.Set原型上的方法
+	let set=new Set([1,2,3,4,5,2,3,2]);
+	console.log(set);
+	//size  长度
+	
+//1.add() :增加，之前没有才可以加上(加在后面)，返回当前实例，可以实现链式写法
+	console.log(set.add(6).add(8));
+
+//2.has() :判断有没有某一项，返回true/false
+	console.log(set.has(1));//true
+
+//3.delete() :删除，返回true/false	
+	console.log(set.delete(1));//true
+	console.log(set.delete(9));//false
+
+//4.clear() :清空  没有返回值 undefined
+	console.log(set.clear());//undefined
+
+	let arr1=[1,2,3,4,5];
+	let arr2=[2,3,4,5,7,8];
+//并集
+	function bj(arr1,arr2){
+		return [...new Set([...arr1,...arr2])];
+	}
+	console.log(bj(arr1,arr2));//[1, 2, 3, 4, 5, 7, 8]
+
+//交集
+	function jj(arr1,arr2){
+		return arr1.filter((item)=>{
+			return arr2.includes(item);
+		})
+	}
+	console.log(jj(arr1,arr2));//[2, 3, 4, 5]
+
+//差集:  并集过滤掉交集
+	function cj(arr1,arr2){
+		return bj(arr1,arr2).filter((item)=>{
+			return !jj(arr1,arr2).includes(item);
+		})
+	}
+	console.log(cj(arr1,arr2));//[1,7,8]
+}	
+
+{
+	// 二.Map
+//1.使用构造函数方式创建一个实例
+//2.参数是数组，数组每一项都是一个数组，这个数组有两项（key,value）
+//3.key可以是任意数据类型
+	var map1=new Map([[1,'a'],['a','A'],[{name:'珠峰'},'珠峰'],[/\d+/,'正则']]);
+	console.log(map1);
+
+//Map原型上的方法：
+//1.get(key)
+	console.log(map1.get('a'));//A
+//2.set(key,value)
+	console.log(map1.set(2,'js'));
+//3.delete,has,clear
+	let ary=[1,2,3,4,5,6];
+	//将数组变成Map
+	var map=new Map();
+	//1,[1]
+	//2,[1,2]
+	//3,[1,2,3]
+	ary.forEach((item,index)=>{
+		map.set(index+1,ary.slice(0,index+1))
+	})
+	console.log(map);
+
+//4.forEach(),keys(),values(),entries();既能遍历value，又能遍历key
+
+	map.forEach((val,key,map){
+		//val：值  key:键  map:原Map实例
+	})
+	for(var key of map.keys()){
+		// key:键
+	}
+	for(var val of map.values()){
+		// val:值
+	}
+	for(var [key,val] of map.entries()){
+		//val:值,
+        //key:键
+	}
+
+}
+</script>

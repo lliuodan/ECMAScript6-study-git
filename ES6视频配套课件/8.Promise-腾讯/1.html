@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Promise</title>
+</head>
+<body>
+Promise:承诺，许诺
+	作用：解决异步回调问题
+	传统方式：大部分用回调函数，事件
+</body>
+</html>
+<script>
+	//语法
+	let a=10;
+	let promise=new Promise(function(resolve,reject){
+		//resolve,成功调用
+		//reject，失败调用
+		if(a==10){
+			resolve('成功');
+		}else{
+			reject('失败')
+		}
+	});
+	promise.then(res=>{
+		console.log(res);
+	},err=>{
+		console.log(err);
+
+	});
+	promise.catch(err=>{//reject,捕获错误
+
+	})
+
+
+	//一般用法
+	let promise2=new Promise(function(){
+
+	}).then(res=>{
+
+	}).catch(err=>{
+
+	})
+
+
+	Promise.resolve('aa');//将现有的东西，转成一个promise对象，resolve状态，成功状态
+	Promise.reject('aa');//...................................,reject状态，失败状态
+
+{
+	let p1=Promise.resolve('aaa');
+	p1.then(res=>{
+		console.log(res);
+	});
+	//等价于
+	let p1=new Promise(resolve=>{
+		resolve('aaa');
+	})
+
+	p1.then(res=>{
+		console.log(res);
+	})
+}
+
+{
+	//promise6
+	let p1=Promise.reject('aaaa');
+}
+	
+
+
+</script>

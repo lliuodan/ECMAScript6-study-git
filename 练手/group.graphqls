@@ -1,0 +1,102 @@
+extend type Query {
+  # 查询群组列表
+  group_list(groupName:String,order:[Order],page:Page):GroupPageInfo
+  # 根据群组id查询群组成员信息
+  group_view(groupInfoId:ID!):GroupMemberInfo
+  # 查询组织机构树(第一次查询pid传空，之后用出参中的id作为pid入参)
+  groupTree_List(orgId:ID!,orgName:String):[GroupTreeInfo]
+  # 根据组织机构查人(组织机构树节点的id作为orgId入参，uname作为模糊查询)
+  person_list(orgId:ID!,uname:String,subject:[String]):[PersonInfo]
+}
+extend type Mutation {
+  # 新增群组
+  group_save(groupName:String!,groupMember:[GroupMemberInput]!):IdInfo
+  # 修改群组名称
+  groupName_update(groupName:String!,groupId:ID!):StatusInfo
+  # 修改群组成员加人
+  groupMember_join(groupMember:[GroupMemberInput]!,groupId:ID!):StatusInfo
+  # 修改群组成员减人
+  groupMember_unJoin(memberAccount:[String]!,groupId:ID!):StatusInfo
+  # 群组删除
+  group_del(groupId:[ID]!):StatusInfo
+}
+
+type GroupInfo{
+  # 群组id
+  groupId:ID
+  # 群组名称
+  groupName:String
+  # 创建时间
+  createrTime(pattern:String):String
+  # 群组人员人数
+  personNumber:Int
+}
+
+type GroupPageInfo{
+  data:[GroupInfo]
+  count:Long
+}
+input GroupMemberInput{
+  # 群组成员账号
+  memberAccount:String!
+  # 群组成员姓名
+  memberUname:String!
+  # 群组成员类型
+  memberType:String!
+  # 组织机构id
+  orgId:ID!
+  # 组织机构Code
+  orgCode:String!
+  # 组织机构类型
+  orgType:String!
+  # 组织机构名称
+  orgName:String!
+}
+type GroupMemberInfo{
+  # 群组成员账号
+  memberAccount:String
+  # 群组成员姓名
+  memberUname:String
+  # 群组成员类型
+  memberType:String
+  # 群组成员类型名称
+  memberTypeName:String
+  # 组织机构id
+  orgId:ID
+  # 组织机构Code
+  orgCode:String
+  # 组织机构类型
+  orgType:String
+  # 组织机构名称
+  orgName:String
+}
+type GroupTreeInfo{
+  # 组织机构id
+  orgId:ID
+  # 组织机构Code
+  orgCode:String
+  # 组织机构类型
+  orgType:String
+  # 组织机构树节点名称
+  orgName:String
+  # 是否含有子节点
+  haveChildFlg:Boolean
+}
+type PersonInfo{
+  # 账号
+  account:String
+  # 用户类型(01:老师，05:教研员)
+  userType:String
+  # 用户类型名称
+  userTypeName:String
+  # 姓名
+  uname:String
+  # 组织机构id
+  orgId:ID
+  # 组织机构Code
+  orgCode:String
+  # 组织机构类型
+  orgType:String
+  # 组织机构名称
+  orgName:String
+}

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>函数的扩展</title>
+</head>
+<body>
+1.基本用法
+2.与解构赋值默认值结合起来使用
+3.参数默认值的位置
+4.函数的length
+5.参数作用域
+6.参数集合
+7.扩展运算符
+8.name属性
+9.箭头函数
+<div id="box" style="width:200px;height:100px;background:red;"></div>
+</body>
+</html>
+<script>
+{
+	//一.函数参数问题
+//函数的参数可以加默认值,只有不传实参的时候才会走默认值
+	function fn1(x='x',y){
+		console.log(x,y);//, 2
+	}
+	fn1(1,2);
+
+	function fn2({x=0,y=0}={}){
+		// console.log({x,y});//{x:0,y:0}
+		return {x,y};//{x: 1, y: 0}
+	}
+	console.log(fn2({x:1}));
+
+	function fn3({x,y}={x:0,y:0}){
+		return {x,y};
+	}
+	console.log(fn3({x:1}));//{x: 1, y: undefined}
+
+
+//一般会把默认值放在后面
+	function fn4(x,y=1,z){
+
+	}
+	fn4(1,2,3);
+
+//参数集合
+	function fn5(){
+		//实参的长度
+		console.log(arguments.length);
+	}
+	fn5(1,2,3,4,5)
+
+	function fn6(x,y=1,z){
+		
+	}
+	fn6();
+	//没有默认值的情况下：形参的长度
+	//有默认值，默认值的参数的位置
+	console.log(fn6.length);//1
+}
+
+
+{
+	//二.函数作用域问题
+	
+	let n=10,m=20;
+	function fn1(x=n,y=m){
+		let n=1,m=2;
+		console.log(x,y);//10 20
+	}
+	fn1();
+
+	let x=10;
+	function fn2(x=1,y=x){
+		// let x=20;// 'x' has already been declared
+		// 因为形参已经有了x,所以let x=20;不能重新被定义
+		console.log(x,y);//1 1
+
+	}
+	//形参所在的小括号是一个单独的作用域，遇到变量了先找自己的，没有再往上一级找
+	//
+	fn2();
+}
+
+{
+	//三.扩展运算符  ...
+	//可以将数组变成非数组，也可以将非数组变成数组
+	
+	let ary=[1,2,3];
+	console.log(...ary);//1 2 3
+
+//将字符串变为数组
+	let str='12345';
+	console.log([...str]);
+
+//将类数组变成数组
+	function fn(){
+		console.log([...arguments].sort());
+	}
+	fn(2,1,4,6,8,5,3);
+
+//应用：求最大值的方法 Math.max(1,2,3,4,43,2,12)
+	let ary1=[2,3,5,1,5,7,5,43,2,455];
+	console.log("Math.max("+ary1+")");//Math.max(2,3,5,1,5,7,5,43,2,455)  里面会默认转toString方法
+	console.log(eval("Math.max("+ary1+")"));//455
+
+//applay
+	let ary2=Math.max.apply(null,ary1);
+	console.log(ary2);//455
+
+//concat
+	let a1=[2,3,4],a2=[1,2,6,7];
+	console.log(a1.concat(a2));
+	console.log([...a1,...a2])
+}
+
+{
+	//四.函数的name属性
+	// function fn(){};
+	let fn=function(){};
+	console.log(fn.name);//fn
+	console.log((function(){}).name);//空  匿名函数
+
+//bind ----->bound 函数名
+	let obj={};
+	var fn1=fn.bind(obj);
+	fn1();
+	console.log(fn1.name);//bound fn
+
+//new Function------->anonymous	匿名
+	let f=new Function('n','return n');
+	console.log(f.name);//anonymous	
+
+}
+
+{
+	//五.箭头函数
+	function fn(x){
+		return x;
+	}
+	//改为箭头函数：x=>x;
+//一般来说:1.点前执行是谁就是谁  2.new 执行函数中执行window  3.点击事件中谁点击就是谁
+
+
+//箭头函数中this问题
+	//箭头函数没有this指向，它里面的this是谁，看它的上一级作用域中的this(保证上一级作用域不是箭头函数，如果上一级是箭头函数，还要往上找，直到找到的不是箭头函数)
+	 let obj={
+	 	fn:function(){
+	 		console.log(this);
+	 		let f=()=>{
+	 			console.log(this);//this==obj
+	 		};
+	 		f();
+	 	},
+	 	fn1:()=>{
+	 		console.log(this);
+	 	}
+	 }
+	 obj.fn();//this==obj
+	 obj.fn1();//thid==window
+
+	 document.getElementById('box').onclick=()=>{
+	 	console.log(this);//window
+	 }
+
+
+}
+</script>

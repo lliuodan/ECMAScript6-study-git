@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>珠峰培训</title>
+</head>
+<body>
+
+</body>
+</html>
+<script type="text/javascript">
+    'use strict';
+
+    let {x,y="Y"}={x:"X",y:"YY"};
+    let {m:[m1],n}={m:[1],n:1};
+
+    let {a,__proto__}=1;
+    console.log(Object(1));//{__proto__:Number}
+    console.log(__proto__);
+
+    let {b,constructor}=Boolean.prototype;
+
+    console.log(Object(Boolean.prototype));
+    console.log(constructor);
+
+    //没有默认值的形参的长度
+    let {length,name}=function (a,b=1) {};
+    console.log(Object(function (a, b) {}));
+    console.log(length,name);
+
+    //null和undefined 不能转为对象 会报错
+    //let {nn}=null;
+    let {mm}=undefined;
+    console.log(nn);
+    console.log(mm);
+
+    {
+        //自己写的
+    //1.解构赋值
+        let obj={
+            n1:'p1',
+            n2:'p2'
+        };
+        // let n1=obj['n1'];
+        // let n2=obj['n2'];
+        
+        //变量名==属性名
+        let {n1,n2}=obj;
+        console.log(n1,n2);//p1,p2
+
+        
+        
+
+    }
+</script>
